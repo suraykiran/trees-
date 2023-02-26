@@ -12,6 +12,17 @@ using namespace std;
                 left=right=NULL;
              }
     };
+     void prin(vector<vector<int>>ans)
+     {
+        for(int i=0;i<ans.size();i++)
+        {
+            for(int j=0;j<ans[i].size();j++)
+            {
+                cout<< ans[i][j];
+            }
+            cout<<endl;
+        }
+     }
      void postorder(Node *root)
      {
         if(root==NULL)
@@ -40,6 +51,41 @@ using namespace std;
         cout<<root->data<<" ";
         Inorder(root->right);
      }
+      void rlevelorder(Node *root,vector<vector<int>>&ans,int l)
+      {
+        if(root==NULL)
+            return;
+        if(ans.size()==l)
+            ans.push_back({root->data});
+        else
+            ans[l].push_back(root->data);
+        rlevelorder(root->left,ans,l+1);
+        rlevelorder(root->right,ans,l+1);
+      }
+     void levelorder(Node *root)
+     {
+        vector<vector<int>>ans;
+        queue<Node*>q;
+        q.push(root);
+        int n=q.size();
+        while(!q.empty())
+        {
+           vector<int>v;
+           int n=q.size();
+           while(n--)
+           {
+            Node *p=q.front();
+            if(p->left) q.push(p->left);
+            if(p->right) q.push(p->right);
+             v.push_back(p->data);
+             q.pop();
+           }
+           ans.push_back(v);
+        }
+        prin(ans);
+     }
+
+    
     int main()
  {
     Node *root =new Node(10);
@@ -49,6 +95,10 @@ using namespace std;
      root->right=second;
     Node *third =new Node(40);
     first->left=third;
-    postorder(root);
-   
+    vector<vector<int>>ans;
+    rlevelorder(root,ans,0);
+    prin(ans);
+
  }
+   
+   
